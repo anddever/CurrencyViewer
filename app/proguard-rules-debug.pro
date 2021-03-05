@@ -22,4 +22,6 @@
 
 -keepattributes Signature, RuntimeVisibleAnnotations, AnnotationDefault
 
+-keep, allowshrinking class ru.anddever.currencyviewer.model** { *; }
+
 -keepattributes LocalVariableTable, LocalVariableTypeTable

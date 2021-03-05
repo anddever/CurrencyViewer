@@ -22,6 +22,8 @@
 
 -keepattributes Signature, RuntimeVisibleAnnotations, AnnotationDefault
 
+-keep, allowshrinking class ru.anddever.currencyviewer.model** { *; }
+
 -assumenosideeffects class android.util.Log {
   v(...);
   d(...);

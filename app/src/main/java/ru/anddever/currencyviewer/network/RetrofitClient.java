@@ -5,11 +5,8 @@ import android.os.Build;
 import androidx.viewbinding.BuildConfig;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;

@@ -10,6 +10,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ru.anddever.currencyviewer.databinding.ActivityMainBinding;
+import ru.anddever.currencyviewer.model.CurrencyResponse;
 import ru.anddever.currencyviewer.network.RetrofitClient;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,15 +28,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Call<Object> currencyCall = RetrofitClient.getInstance().getServerApi().getCurrency();
-        currencyCall.enqueue(new Callback<Object>() {
+        Call<CurrencyResponse> currencyCall =
+                RetrofitClient.getInstance().getServerApi().getCurrency();
+        currencyCall.enqueue(new Callback<CurrencyResponse>() {
             @Override
-            public void onResponse(@NonNull Call<Object> call, @NonNull Response<Object> response) {
+            public void onResponse(@NonNull Call<CurrencyResponse> call,
+                                   @NonNull Response<CurrencyResponse> response) {
                 Log.d(TAG, "onResponse: " + response.body());
             }
 
             @Override
-            public void onFailure(@NonNull Call<Object> call, @NonNull Throwable t) {
+            public void onFailure(@NonNull Call<CurrencyResponse> call, @NonNull Throwable t) {
                 Log.e(TAG, "onFailure: ", t);
             }
         });
