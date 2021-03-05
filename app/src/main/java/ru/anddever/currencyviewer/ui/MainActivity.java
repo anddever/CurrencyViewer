@@ -1,28 +1,48 @@
-package ru.anddever.currencyviewer;
+package ru.anddever.currencyviewer.ui;
 
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ru.anddever.currencyviewer.databinding.ActivityMainBinding;
+import ru.anddever.currencyviewer.model.CurrencyDetails;
 import ru.anddever.currencyviewer.model.CurrencyResponse;
 import ru.anddever.currencyviewer.network.RetrofitClient;
+import ru.anddever.currencyviewer.ui.adapter.CurrencyAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
     static final String TAG = MainActivity.class.getSimpleName();
     ActivityMainBinding binding;
+    private ArrayList<CurrencyDetails> currencies;
+    private CurrencyAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        currencies = new ArrayList<>();
+        adapter = new CurrencyAdapter(currencies);
+        RecyclerView currencyRecycler = binding.currencyRecycler;
+        currencyRecycler.setAdapter(adapter);
+        currencyRecycler.setLayoutManager(new LinearLayoutManager(this));
+        currencyRecycler.addItemDecoration(new DividerItemDecoration(this,
+                LinearLayoutManager.VERTICAL));
+        currencyRecycler.setItemAnimator(new DefaultItemAnimator());
     }
 
     @Override
@@ -35,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<CurrencyResponse> call,
                                    @NonNull Response<CurrencyResponse> response) {
                 Log.d(TAG, "onResponse: " + response.body());
+                currencies.addAll(response.body().getValute().values());
+                adapter.notifyDataSetChanged();
             }
 
             @Override
