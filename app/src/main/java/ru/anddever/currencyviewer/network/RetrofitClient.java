@@ -4,9 +4,16 @@ import android.os.Build;
 
 import androidx.viewbinding.BuildConfig;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import okhttp3.ConnectionSpec;
 import okhttp3.OkHttpClient;
+import okhttp3.TlsVersion;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -24,16 +31,30 @@ public class RetrofitClient {
         interceptor.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY :
                 HttpLoggingInterceptor.Level.NONE);
 
+
+        ConnectionSpec modernTlsSpec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
+                .tlsVersions(TlsVersion.TLS_1_0)
+                .allEnabledCipherSuites()
+                .build();
+        List<ConnectionSpec> specs = Arrays.asList(ConnectionSpec.CLEARTEXT, modernTlsSpec);
+
         client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
+                //Preventing SSLHandshakeException on devices with Android 4
+                .connectionSpecs(specs)
                 .connectTimeout(100, TimeUnit.SECONDS)
                 .readTimeout(100, TimeUnit.SECONDS)
                 .build();
 
-        String protocol = Build.VERSION.SDK_INT < 22 ? "https://" : "http://";
+        //If use https SSLProtocolException occur on deices lower sdk 22
+        String protocol = Build.VERSION.SDK_INT > 21 ? "https://" : "http://";
+        //String protocol = "https://";
 
-        StringBuffer baseUrlBuilder = new StringBuffer(protocol);
-        baseUrlBuilder.append(CBR_XML_DAILY_URL).append("/");
+        StringBuffer baseUrlBuilder = new StringBuffer();
+        baseUrlBuilder
+                .append(protocol)
+                .append(CBR_XML_DAILY_URL)
+                .append("/");
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrlBuilder.toString())
