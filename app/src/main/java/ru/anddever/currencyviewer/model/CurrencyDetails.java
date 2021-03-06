@@ -111,14 +111,6 @@ public class CurrencyDetails {
     @NonNull
     @Override
     public String toString() {
-        return "CurrencyDetails{" +
-                "ID='" + ID + '\'' +
-                ", NumCode='" + NumCode + '\'' +
-                ", CharCode='" + CharCode + '\'' +
-                ", Nominal=" + Nominal +
-                ", Name='" + Name + '\'' +
-                ", Value=" + Value +
-                ", Previous=" + Previous +
-                '}';
+        return Name;
     }
 }

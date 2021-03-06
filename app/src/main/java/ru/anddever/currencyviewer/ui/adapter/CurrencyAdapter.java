@@ -18,7 +18,7 @@ import ru.anddever.currencyviewer.model.CurrencyDetails;
  */
 public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.CurrencyViewHolder> {
 
-    private ArrayList<CurrencyDetails> currencies;
+    private final ArrayList<CurrencyDetails> currencies;
 
     public CurrencyAdapter(ArrayList<CurrencyDetails> currencies) {
         this.currencies = currencies;

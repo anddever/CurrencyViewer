@@ -28,8 +28,7 @@ public class CurrencyRepository {
     }
 
     public void insertAll(List<CurrencyDetails> currencyDetails) {
-        CurrencyDatabase.databaseWriteExecutor.execute(() -> {
-            mCurrencyDao.insertAll(currencyDetails);
-        });
+        CurrencyDatabase.databaseWriteExecutor.execute(() ->
+                mCurrencyDao.insertAll(currencyDetails));
     }
 }

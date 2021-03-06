@@ -58,9 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
         new Thread(() -> {
             CurrencyRepository repository = new CurrencyRepository(getApplication());
-
             currencies.addAll(repository.getAllCurrencies());
-
             Log.d(TAG, "onStart:  currencies.size() " + currencies.size());
 
             if (currencies.size() == 0) {
