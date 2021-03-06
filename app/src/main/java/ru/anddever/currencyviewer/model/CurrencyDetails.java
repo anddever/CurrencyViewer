@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 import java.math.BigDecimal;
 
@@ -36,10 +37,12 @@ public class CurrencyDetails {
     private String Name = "";
 
     @NonNull
+    @TypeConverters(Converters.class)
     @ColumnInfo(name = "value")
     private BigDecimal Value = new BigDecimal(0);
 
     @NonNull
+    @TypeConverters(Converters.class)
     @ColumnInfo(name = "previous")
     private BigDecimal Previous = new BigDecimal(0);
 

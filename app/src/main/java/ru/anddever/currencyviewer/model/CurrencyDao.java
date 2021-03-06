@@ -2,6 +2,7 @@ package ru.anddever.currencyviewer.model;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
+import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import java.util.List;
@@ -18,8 +19,9 @@ public interface CurrencyDao {
     @Query("SELECT * FROM currencies WHERE id = :id")
     CurrencyDetails findById(String id);
 
-    @Insert
-    void insertAll(CurrencyDetails... currencyDetails);
+    // Replace currency with this id if exists
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insertAll(List<CurrencyDetails> currencyDetails);
 
     @Query("DELETE FROM currencies")
     void clearCurrencies();

@@ -23,6 +23,7 @@ import ru.anddever.currencyviewer.databinding.ActivityMainBinding;
 import ru.anddever.currencyviewer.model.CurrencyDetails;
 import ru.anddever.currencyviewer.model.CurrencyResponse;
 import ru.anddever.currencyviewer.network.RetrofitClient;
+import ru.anddever.currencyviewer.repository.CurrencyRepository;
 import ru.anddever.currencyviewer.ui.adapter.CurrencyAdapter;
 
 public class MainActivity extends AppCompatActivity {
@@ -54,22 +55,34 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Call<CurrencyResponse> currencyCall =
-                RetrofitClient.getInstance().getServerApi().getCurrency();
-        currencyCall.enqueue(new Callback<CurrencyResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<CurrencyResponse> call,
-                                   @NonNull Response<CurrencyResponse> response) {
-                Log.d(TAG, "onResponse: " + response.body());
-                currencies.addAll(response.body().getValute().values());
-                adapter.notifyDataSetChanged();
-            }
 
-            @Override
-            public void onFailure(@NonNull Call<CurrencyResponse> call, @NonNull Throwable t) {
-                Log.e(TAG, "onFailure: ", t);
+        new Thread(() -> {
+            CurrencyRepository repository = new CurrencyRepository(getApplication());
+
+            currencies.addAll(repository.getAllCurrencies());
+
+            Log.d(TAG, "onStart:  currencies.size() " + currencies.size());
+
+            if (currencies.size() == 0) {
+                Call<CurrencyResponse> currencyCall =
+                        RetrofitClient.getInstance().getServerApi().getCurrency();
+                currencyCall.enqueue(new Callback<CurrencyResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<CurrencyResponse> call,
+                                           @NonNull Response<CurrencyResponse> response) {
+                        Log.d(TAG, "onResponse: " + response.body());
+                        currencies.addAll(response.body().getValute().values());
+                        repository.insertAll(currencies);
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<CurrencyResponse> call, @NonNull Throwable t) {
+                        Log.e(TAG, "onFailure: ", t);
+                    }
+                });
             }
-        });
+        }).start();
     }
 
     public void openConverter(View view) {

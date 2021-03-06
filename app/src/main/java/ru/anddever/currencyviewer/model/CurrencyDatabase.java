@@ -25,10 +25,10 @@ public abstract class CurrencyDatabase extends RoomDatabase {
      * database operations asynchronously on a background thread
      */
     private static final int NUMBER_OF_THREADS = 4;
-    static final ExecutorService databaseWriteExecutor =
+    public static final ExecutorService databaseWriteExecutor =
             Executors.newFixedThreadPool(NUMBER_OF_THREADS);
 
-    static CurrencyDatabase getDatabase(final Context context) {
+    public static CurrencyDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (CurrencyDatabase.class) {
                 if (INSTANCE == null) {
