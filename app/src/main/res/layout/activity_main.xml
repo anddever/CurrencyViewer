@@ -24,6 +24,7 @@
         android:id="@+id/currency_converter"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:onClick="openConverter"
         android:text="@string/currency_converter_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

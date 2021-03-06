@@ -21,6 +21,7 @@
         </activity>
         <activity
             android:name=".ui.ConverterActivity"
+            android:label="@string/currency_converter_text"
             android:parentActivityName=".ui.MainActivity" />
 
     </application>

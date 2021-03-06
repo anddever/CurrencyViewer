@@ -1,8 +1,10 @@
 package ru.anddever.currencyviewer.ui;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -68,5 +70,9 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "onFailure: ", t);
             }
         });
+    }
+
+    public void openConverter(View view) {
+        startActivity(new Intent(this, ConverterActivity.class));
     }
 }
