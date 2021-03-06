@@ -1,5 +1,6 @@
 package ru.anddever.currencyviewer.ui;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -7,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,7 +40,10 @@ public class MainActivity extends AppCompatActivity {
         adapter = new CurrencyAdapter(currencies);
         RecyclerView currencyRecycler = binding.currencyRecycler;
         currencyRecycler.setAdapter(adapter);
-        currencyRecycler.setLayoutManager(new LinearLayoutManager(this));
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+            currencyRecycler.setLayoutManager(new GridLayoutManager(this, 1));
+        else
+            currencyRecycler.setLayoutManager(new GridLayoutManager(this, 2));
         currencyRecycler.addItemDecoration(new DividerItemDecoration(this,
                 LinearLayoutManager.VERTICAL));
         currencyRecycler.setItemAnimator(new DefaultItemAnimator());
