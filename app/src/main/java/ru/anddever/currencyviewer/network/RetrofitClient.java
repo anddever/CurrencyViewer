@@ -15,13 +15,17 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * Creating Retrofit client network calls using singleton pattern
+ * to prevent having multiple instances of the client at the same time
+ */
 public class RetrofitClient {
 
     public static final String CBR_XML_DAILY_URL = "cbr-xml-daily.ru";
 
     private final ServerApi serverApi;
     private final OkHttpClient client;
-    private volatile static RetrofitClient retrofitClient;
+    private volatile static RetrofitClient INSTANCE;
 
     private RetrofitClient() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
@@ -37,7 +41,7 @@ public class RetrofitClient {
 
         client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
-                //Preventing SSLHandshakeException on devices with Android 4
+                // Preventing SSLHandshakeException on devices with Android 4
                 .connectionSpecs(specs)
                 .connectTimeout(100, TimeUnit.SECONDS)
                 .readTimeout(100, TimeUnit.SECONDS)
@@ -63,14 +67,14 @@ public class RetrofitClient {
     }
 
     public static RetrofitClient getInstance() {
-        if (retrofitClient == null) {
+        if (INSTANCE == null) {
             synchronized (ServerApi.class) {
-                if (retrofitClient == null) {
-                    retrofitClient = new RetrofitClient();
+                if (INSTANCE == null) {
+                    INSTANCE = new RetrofitClient();
                 }
             }
         }
-        return retrofitClient;
+        return INSTANCE;
     }
 
     public ServerApi getServerApi() {

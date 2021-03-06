@@ -13,9 +13,12 @@ import java.util.ArrayList;
 import ru.anddever.currencyviewer.R;
 import ru.anddever.currencyviewer.model.CurrencyDetails;
 
+/**
+ * Adapter class for mapping currencies as list in recycler view
+ */
 public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.CurrencyViewHolder> {
 
-    private ArrayList<CurrencyDetails> currencies = new ArrayList<>();
+    private ArrayList<CurrencyDetails> currencies;
 
     public CurrencyAdapter(ArrayList<CurrencyDetails> currencies) {
         this.currencies = currencies;

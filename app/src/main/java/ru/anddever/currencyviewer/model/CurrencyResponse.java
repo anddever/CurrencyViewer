@@ -6,6 +6,9 @@ import androidx.annotation.NonNull;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Data class for mapping json response to java object
+ */
 @Keep
 public class CurrencyResponse {
 
