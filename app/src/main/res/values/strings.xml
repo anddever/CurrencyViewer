@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CurrencyViewer</string>
+    <string name="currency_converter_text">Конвертер валют</string>
 </resources>
