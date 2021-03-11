@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         currencies = new ArrayList<>();
-        adapter = new CurrencyAdapter(currencies);
+        adapter = new CurrencyAdapter(this, currencies);
         RecyclerView currencyRecycler = binding.currencyRecycler;
         currencyRecycler.setAdapter(adapter);
         if (this.getResources().getConfiguration().orientation ==

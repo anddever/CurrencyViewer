@@ -1,5 +1,7 @@
 package ru.anddever.currencyviewer.ui.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +14,20 @@ import java.util.ArrayList;
 
 import ru.anddever.currencyviewer.R;
 import ru.anddever.currencyviewer.model.CurrencyDetails;
+import ru.anddever.currencyviewer.ui.ConverterActivity;
+
+import static ru.anddever.currencyviewer.utils.Constants.SELECTED_CURRENCY;
 
 /**
  * Adapter class for mapping currencies as list in recycler view
  */
 public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.CurrencyViewHolder> {
 
+    private Context context;
     private final ArrayList<CurrencyDetails> currencies;
 
-    public CurrencyAdapter(ArrayList<CurrencyDetails> currencies) {
+    public CurrencyAdapter(Context context, ArrayList<CurrencyDetails> currencies) {
+        this.context = context;
         this.currencies = currencies;
     }
 
@@ -38,6 +45,10 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
         holder.currencyName.setText(currency.getName());
         holder.currencyCharCode.setText(currency.getCharCode());
         holder.currencyValue.setText(String.valueOf(currency.getValue()));
+        holder.itemView.setOnClickListener(v -> {
+            context.startActivity(new Intent(context, ConverterActivity.class)
+                    .putExtra(SELECTED_CURRENCY, holder.getAdapterPosition()));
+        });
     }
 
     @Override

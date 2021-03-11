@@ -18,6 +18,9 @@ import java.util.List;
 import ru.anddever.currencyviewer.databinding.ActivityConverterBinding;
 import ru.anddever.currencyviewer.model.CurrencyDetails;
 import ru.anddever.currencyviewer.repository.CurrencyRepository;
+import ru.anddever.currencyviewer.utils.Constants;
+
+import static ru.anddever.currencyviewer.utils.Constants.SELECTED_CURRENCY;
 
 public class ConverterActivity extends AppCompatActivity {
 
@@ -39,7 +42,10 @@ public class ConverterActivity extends AppCompatActivity {
             currencyNamesAdapter.
                     setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             binding.currencySpinner.setAdapter(currencyNamesAdapter);
-
+            if (getIntent().getExtras() != null) {
+                binding.currencySpinner.setSelection(getIntent()
+                        .getIntExtra(SELECTED_CURRENCY, 0));
+            }
         }).start();
 
         binding.currencySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
