@@ -1,7 +1,9 @@
 package ru.anddever.currencyviewer.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -47,10 +49,12 @@ public class MainActivity extends AppCompatActivity {
         adapter = new CurrencyAdapter(currencies);
         RecyclerView currencyRecycler = binding.currencyRecycler;
         currencyRecycler.setAdapter(adapter);
-        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+        if (this.getResources().getConfiguration().orientation ==
+                Configuration.ORIENTATION_PORTRAIT) {
             currencyRecycler.setLayoutManager(new GridLayoutManager(this, 1));
-        else
+        } else {
             currencyRecycler.setLayoutManager(new GridLayoutManager(this, 2));
+        }
         currencyRecycler.addItemDecoration(new DividerItemDecoration(this,
                 LinearLayoutManager.VERTICAL));
         currencyRecycler.setItemAnimator(new DefaultItemAnimator());
@@ -65,6 +69,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+        showLoadingViews();
+
         new Thread(() -> {
             repository = new CurrencyRepository(getApplication());
             currencies.clear();
@@ -74,7 +80,10 @@ public class MainActivity extends AppCompatActivity {
             if (currencies.size() == 0) {
                 loadCurrencyData(repository);
             } else {
-                adapter.notifyDataSetChanged();
+                runOnUiThread(() -> {
+                    adapter.notifyDataSetChanged();
+                    hideLoadingViews();
+                });
             }
         }).start();
     }
@@ -91,7 +100,12 @@ public class MainActivity extends AppCompatActivity {
                     currencies.clear();
                     currencies.addAll(response.body().getValute().values());
                     repository.insertAll(currencies);
-                    adapter.notifyDataSetChanged();
+                    runOnUiThread(() -> {
+                        adapter.notifyDataSetChanged();
+                        hideLoadingViews();
+                    });
+                } else {
+                    runOnUiThread(() -> showLoadErrorStatus());
                 }
                 binding.swipeRefresh.setRefreshing(false);
             }
@@ -99,6 +113,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<CurrencyResponse> call, @NonNull Throwable t) {
                 Log.e(TAG, "onFailure: ", t);
+                binding.swipeRefresh.setRefreshing(false);
+                if (currencies.size() == 0) {
+                    if (isNetworkConnected()) {
+                        runOnUiThread(() -> showLoadErrorStatus());
+                    } else {
+                        runOnUiThread(() -> showNetworkErrorStatus());
+                    }
+                }
             }
         });
     }
@@ -121,5 +143,43 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showLoadingViews() {
+        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.statusView.setText(R.string.load_data_msg);
+        binding.statusView.setVisibility(View.VISIBLE);
+        binding.currencyRecycler.setVisibility(View.INVISIBLE);
+        binding.currencyConverter.setVisibility(View.INVISIBLE);
+    }
+
+    private void hideLoadingViews() {
+        binding.progressBar.setVisibility(View.INVISIBLE);
+        binding.statusView.setVisibility(View.INVISIBLE);
+        binding.currencyRecycler.setVisibility(View.VISIBLE);
+        binding.currencyConverter.setVisibility(View.VISIBLE);
+    }
+
+    private void showLoadErrorStatus() {
+        binding.progressBar.setVisibility(View.GONE);
+        binding.statusView.setText(R.string.error_status_msg);
+        binding.statusView.setVisibility(View.VISIBLE);
+        binding.currencyRecycler.setVisibility(View.INVISIBLE);
+        binding.currencyConverter.setVisibility(View.INVISIBLE);
+    }
+
+    private void showNetworkErrorStatus() {
+        binding.progressBar.setVisibility(View.GONE);
+        binding.statusView.setText(R.string.error_network_msg);
+        binding.statusView.setVisibility(View.VISIBLE);
+        binding.currencyRecycler.setVisibility(View.INVISIBLE);
+        binding.currencyConverter.setVisibility(View.INVISIBLE);
+    }
+
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(
+                Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null &&
+                cm.getActiveNetworkInfo().isConnected();
     }
 }
