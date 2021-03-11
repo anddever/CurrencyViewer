@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
 
@@ -74,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
 
             if (currencies.size() == 0) {
                 loadCurrencyData(repository);
+            } else {
+                adapter.notifyDataSetChanged();
             }
         }).start();
     }
@@ -86,10 +87,12 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<CurrencyResponse> call,
                                    @NonNull Response<CurrencyResponse> response) {
                 Log.d(TAG, "onResponse: " + response.body());
-                currencies.clear();
-                currencies.addAll(response.body().getValute().values());
-                repository.insertAll(currencies);
-                adapter.notifyDataSetChanged();
+                if (response.body() != null) {
+                    currencies.clear();
+                    currencies.addAll(response.body().getValute().values());
+                    repository.insertAll(currencies);
+                    adapter.notifyDataSetChanged();
+                }
                 binding.swipeRefresh.setRefreshing(false);
             }
 

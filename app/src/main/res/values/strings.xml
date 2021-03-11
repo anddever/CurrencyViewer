@@ -3,4 +3,5 @@
     <string name="currency_converter_text">Конвертер валют</string>
     <string name="amount_in_rubles">Сумма в рублях</string>
     <string name="menu_refresh">Обновить</string>
+    <string name="upload_currency_data_work">UploadCurrencyDataWork</string>
 </resources>

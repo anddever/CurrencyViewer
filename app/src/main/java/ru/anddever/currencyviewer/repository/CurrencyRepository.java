@@ -1,6 +1,6 @@
 package ru.anddever.currencyviewer.repository;
 
-import android.app.Application;
+import android.content.Context;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class CurrencyRepository {
     private final CurrencyDao mCurrencyDao;
     private final List<CurrencyDetails> mCurrencies;
 
-    public CurrencyRepository(Application application) {
+    public CurrencyRepository(Context application) {
         CurrencyDatabase db = CurrencyDatabase.getDatabase(application);
         mCurrencyDao = db.currencyDao();
         mCurrencyDao.getAll();
