@@ -2,9 +2,11 @@ package ru.anddever.currencyviewer.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +32,9 @@ import ru.anddever.currencyviewer.model.CurrencyResponse;
 import ru.anddever.currencyviewer.network.RetrofitClient;
 import ru.anddever.currencyviewer.repository.CurrencyRepository;
 import ru.anddever.currencyviewer.ui.adapter.CurrencyAdapter;
+import ru.anddever.currencyviewer.utils.Utils;
+
+import static ru.anddever.currencyviewer.utils.Constants.DATA_TIMESTAMP;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -38,12 +43,15 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<CurrencyDetails> currencies;
     private CurrencyAdapter adapter;
     private CurrencyRepository repository;
+    private SharedPreferences settingsPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        settingsPref = PreferenceManager.getDefaultSharedPreferences(this);
 
         currencies = new ArrayList<>();
         adapter = new CurrencyAdapter(this, currencies);
@@ -82,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 runOnUiThread(() -> {
                     adapter.notifyDataSetChanged();
+                    binding.dateView.setText(String.format(getString(R.string.timestamp_holder),
+                            settingsPref.getString(DATA_TIMESTAMP, "")));
                     hideLoadingViews();
                 });
             }
@@ -100,8 +110,13 @@ public class MainActivity extends AppCompatActivity {
                     currencies.clear();
                     currencies.addAll(response.body().getValute().values());
                     repository.insertAll(currencies);
+                    Log.d(TAG, "CONVERT DATE: " + Utils.dateConverter(response.body().getTimestamp()));
+                    settingsPref.edit().putString(DATA_TIMESTAMP,
+                            Utils.dateConverter(response.body().getTimestamp())).apply();
                     runOnUiThread(() -> {
                         adapter.notifyDataSetChanged();
+                        binding.dateView.setText(String.format(getString(R.string.timestamp_holder),
+                                settingsPref.getString(DATA_TIMESTAMP, "")));
                         hideLoadingViews();
                     });
                 } else {
@@ -151,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
         binding.statusView.setVisibility(View.VISIBLE);
         binding.currencyRecycler.setVisibility(View.INVISIBLE);
         binding.currencyConverter.setVisibility(View.INVISIBLE);
+        binding.dateView.setVisibility(View.INVISIBLE);
     }
 
     private void hideLoadingViews() {
@@ -158,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
         binding.statusView.setVisibility(View.INVISIBLE);
         binding.currencyRecycler.setVisibility(View.VISIBLE);
         binding.currencyConverter.setVisibility(View.VISIBLE);
+        binding.dateView.setVisibility(View.VISIBLE);
     }
 
     private void showLoadErrorStatus() {
@@ -166,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
         binding.statusView.setVisibility(View.VISIBLE);
         binding.currencyRecycler.setVisibility(View.INVISIBLE);
         binding.currencyConverter.setVisibility(View.INVISIBLE);
+        binding.dateView.setVisibility(View.INVISIBLE);
     }
 
     private void showNetworkErrorStatus() {
@@ -174,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
         binding.statusView.setVisibility(View.VISIBLE);
         binding.currencyRecycler.setVisibility(View.INVISIBLE);
         binding.currencyConverter.setVisibility(View.INVISIBLE);
+        binding.dateView.setVisibility(View.INVISIBLE);
     }
 
     private boolean isNetworkConnected() {

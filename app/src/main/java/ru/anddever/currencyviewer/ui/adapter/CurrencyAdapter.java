@@ -24,7 +24,7 @@ import static ru.anddever.currencyviewer.utils.Constants.SELECTED_CURRENCY;
  */
 public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.CurrencyViewHolder> {
 
-    private Context context;
+    private final Context context;
     private final ArrayList<CurrencyDetails> currencies;
 
     public CurrencyAdapter(Context context, ArrayList<CurrencyDetails> currencies) {
