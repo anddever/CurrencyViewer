@@ -14,10 +14,13 @@
         android:id="@+id/date_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/currency_converter"
+        app:layout_constraintEnd_toStartOf="@+id/currency_converter"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/currency_converter"
         tools:text="@string/timestamp_holder" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -27,7 +30,7 @@
         app:layout_constraintBottom_toTopOf="@+id/currency_converter"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/date_view">
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/currency_recycler"
@@ -72,7 +75,7 @@
         android:onClick="openConverter"
         android:text="@string/currency_converter_text"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/date_view"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
