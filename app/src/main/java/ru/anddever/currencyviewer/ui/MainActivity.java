@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 
 import retrofit2.Call;
@@ -135,6 +137,18 @@ public class MainActivity extends AppCompatActivity {
                     } else {
                         runOnUiThread(() -> showNetworkErrorStatus());
                     }
+                } else {
+                    String errorMsg = getString(R.string.error_network_msg);
+                    if (isNetworkConnected()) {
+                        errorMsg = getString(R.string.error_status_msg);
+                    }
+                    String finalErrorMsg = errorMsg;
+                    runOnUiThread(() ->
+                            Snackbar
+                                    .make(binding.getRoot(),
+                                            finalErrorMsg,
+                                            Snackbar.LENGTH_LONG)
+                                    .show());
                 }
             }
         });
