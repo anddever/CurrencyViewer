@@ -7,4 +7,5 @@
     <string name="load_data_msg">Загрузка данных…</string>
     <string name="error_status_msg">Ошибка при загрузке данных :(\nПопроуйте повторить попытку позже</string>
     <string name="error_network_msg">Отсутсвует Интернет соединение, проверьте подключение в настройках</string>
+    <string name="grow_arrow">Grow arrow</string>
 </resources>

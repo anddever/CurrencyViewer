@@ -14,16 +14,17 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/currency_char_code"
+        app:layout_constraintEnd_toStartOf="@+id/grow_arrow"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currency_char_code"
         tools:text="Австралийский доллар" />
 
     <TextView
         android:id="@+id/currency_char_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="AUD" />
 
@@ -31,9 +32,29 @@
         android:id="@+id/currency_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/currency_name"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintBottom_toBottomOf="@+id/currency_char_code"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/currency_char_code"
         tools:text="57.182" />
+
+    <TextView
+        android:id="@+id/currency_prev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currency_value"
+        tools:text="57.170" />
+
+    <ImageView
+        android:id="@+id/grow_arrow"
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        app:layout_constraintBottom_toBottomOf="@+id/currency_prev"
+        app:layout_constraintEnd_toStartOf="@+id/currency_prev"
+        app:layout_constraintTop_toTopOf="@+id/currency_prev"
+        app:srcCompat="@drawable/ic_baseline_arrow_upward"
+        android:contentDescription="@string/grow_arrow" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

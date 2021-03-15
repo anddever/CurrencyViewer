@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -45,10 +46,15 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
         holder.currencyName.setText(currency.getName());
         holder.currencyCharCode.setText(currency.getCharCode());
         holder.currencyValue.setText(String.valueOf(currency.getValue()));
-        holder.itemView.setOnClickListener(v -> {
-            context.startActivity(new Intent(context, ConverterActivity.class)
-                    .putExtra(SELECTED_CURRENCY, holder.getAdapterPosition()));
-        });
+        holder.currencyPrev.setText(String.valueOf(currency.getPrevious()));
+        if (currency.getValue().compareTo(currency.getPrevious()) < 0) {
+            holder.growArrow.setImageResource(R.drawable.ic_baseline_arrow_downward);
+        } else {
+            holder.growArrow.setImageResource(R.drawable.ic_baseline_arrow_upward);
+        }
+        holder.itemView.setOnClickListener(v ->
+                context.startActivity(new Intent(context, ConverterActivity.class)
+                        .putExtra(SELECTED_CURRENCY, holder.getAdapterPosition())));
     }
 
     @Override
@@ -61,12 +67,16 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
         private final TextView currencyName;
         private final TextView currencyCharCode;
         private final TextView currencyValue;
+        private final TextView currencyPrev;
+        private final ImageView growArrow;
 
         public CurrencyViewHolder(@NonNull View itemView) {
             super(itemView);
             currencyName = itemView.findViewById(R.id.currency_name);
             currencyCharCode = itemView.findViewById(R.id.currency_char_code);
             currencyValue = itemView.findViewById(R.id.currency_value);
+            currencyPrev = itemView.findViewById(R.id.currency_prev);
+            growArrow = itemView.findViewById(R.id.grow_arrow);
         }
     }
 }
