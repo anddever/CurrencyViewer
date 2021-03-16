@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.work.ListenableWorker;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -18,9 +19,13 @@ import ru.anddever.currencyviewer.model.CurrencyResponse;
 import ru.anddever.currencyviewer.network.RetrofitClient;
 import ru.anddever.currencyviewer.repository.CurrencyRepository;
 
+/**
+ * Worker for periodical loading currency data in background
+ */
 public class UpdateCurrencyWorker extends Worker {
 
     public static final String TAG = UpdateCurrencyWorker.class.getSimpleName();
+    public final Result[] result = new Result[]{Result.failure()};
 
     public UpdateCurrencyWorker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -29,8 +34,6 @@ public class UpdateCurrencyWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-        Log.d(TAG, "doWork: ");
-        final Result[] result = {Result.failure()};
         CountDownLatch countDownLatch = new CountDownLatch(1);
 
         Call<CurrencyResponse> currencyCall =
