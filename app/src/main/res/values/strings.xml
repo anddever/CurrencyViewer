@@ -10,4 +10,5 @@
     <string name="grow_arrow">Индикатор роста</string>
     <string name="timestamp_holder">По состоянию на %s</string>
     <string name="search">Поиск</string>
+    <string name="not_found_msg">По Вашему поиску ничего не найдено</string>
 </resources>

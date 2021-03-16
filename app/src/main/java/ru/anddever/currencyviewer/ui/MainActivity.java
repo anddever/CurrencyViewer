@@ -1,5 +1,6 @@
 package ru.anddever.currencyviewer.ui;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,6 +15,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -38,14 +40,18 @@ import ru.anddever.currencyviewer.utils.Utils;
 
 import static ru.anddever.currencyviewer.utils.Constants.DATA_TIMESTAMP;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        SearchView.OnQueryTextListener, CurrencyAdapter.UpdateCurrenciesFiltered {
 
     static final String TAG = MainActivity.class.getSimpleName();
     ActivityMainBinding binding;
+    ArrayList<CurrencyDetails> currenciesFiltered = new ArrayList<>();
     private ArrayList<CurrencyDetails> currencies;
     private CurrencyAdapter adapter;
     private CurrencyRepository repository;
     private SharedPreferences settingsPref;
+    private SearchView searchView;
+    private MenuItem searchItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,6 +167,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+        searchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
+        searchView.setOnQueryTextListener(this);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        if (searchManager != null)
+            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(true);
+        searchItem = menu.findItem(R.id.menu_search);
         return true;
     }
 
@@ -181,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
         binding.currencyRecycler.setVisibility(View.INVISIBLE);
         binding.currencyConverter.setVisibility(View.INVISIBLE);
         binding.dateView.setVisibility(View.INVISIBLE);
+        if (searchItem != null) searchItem.setVisible(false);
     }
 
     private void hideLoadingViews() {
@@ -188,7 +202,10 @@ public class MainActivity extends AppCompatActivity {
         binding.statusView.setVisibility(View.INVISIBLE);
         binding.currencyRecycler.setVisibility(View.VISIBLE);
         binding.currencyConverter.setVisibility(View.VISIBLE);
-        binding.dateView.setVisibility(View.VISIBLE);
+        if (!settingsPref.getString(DATA_TIMESTAMP, "").isEmpty()) {
+            binding.dateView.setVisibility(View.VISIBLE);
+        }
+        if (searchItem != null) searchItem.setVisible(true);
     }
 
     private void showLoadErrorStatus() {
@@ -198,6 +215,7 @@ public class MainActivity extends AppCompatActivity {
         binding.currencyRecycler.setVisibility(View.INVISIBLE);
         binding.currencyConverter.setVisibility(View.INVISIBLE);
         binding.dateView.setVisibility(View.INVISIBLE);
+        if (searchItem != null) searchItem.setVisible(false);
     }
 
     private void showNetworkErrorStatus() {
@@ -207,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
         binding.currencyRecycler.setVisibility(View.INVISIBLE);
         binding.currencyConverter.setVisibility(View.INVISIBLE);
         binding.dateView.setVisibility(View.INVISIBLE);
+        if (searchItem != null) searchItem.setVisible(false);
     }
 
     private boolean isNetworkConnected() {
@@ -214,5 +233,34 @@ public class MainActivity extends AppCompatActivity {
                 Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null &&
                 cm.getActiveNetworkInfo().isConnected();
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        searchView.clearFocus();
+        adapter.getFilter().filter(query);
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        adapter.getFilter().filter(newText);
+        return true;
+    }
+
+    @Override
+    public void updateCurrenciesFiltered(ArrayList<CurrencyDetails> currenciesFiltered) {
+        this.currenciesFiltered = currenciesFiltered;
+        if (currenciesFiltered.size() == 0) {
+            binding.statusView.setText(R.string.not_found_msg);
+            binding.statusView.setVisibility(View.VISIBLE);
+            binding.dateView.setVisibility(View.INVISIBLE);
+            binding.currencyConverter.setVisibility(View.INVISIBLE);
+        } else {
+            binding.statusView.setText("");
+            binding.statusView.setVisibility(View.INVISIBLE);
+            binding.dateView.setVisibility(View.VISIBLE);
+            binding.currencyConverter.setVisibility(View.VISIBLE);
+        }
     }
 }

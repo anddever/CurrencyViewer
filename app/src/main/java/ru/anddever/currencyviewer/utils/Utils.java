@@ -17,20 +17,20 @@ public class Utils {
      * @return string representation of converted date or empty string
      */
     public static String dateConverter(String rawDate) {
-        DateFormat targetFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm",
-                Locale.getDefault());
-        DateFormat srcFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX",
-                Locale.getDefault());
         Date date;
         try {
+            DateFormat targetFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm",
+                    Locale.getDefault());
+            DateFormat srcFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZZ",
+                    Locale.getDefault());
             date = srcFormat.parse(rawDate);
-        } catch (ParseException e) {
+            if (date != null) {
+                return targetFormat.format(date);
+            } else {
+                return "";
+            }
+        } catch (ParseException | IllegalArgumentException e) {
             Log.e("MainActivity", "dateConverter: ", e);
-            return "";
-        }
-        if (date != null) {
-            return targetFormat.format(date);
-        } else {
             return "";
         }
     }

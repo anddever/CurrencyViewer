@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,14 +26,19 @@ import static ru.anddever.currencyviewer.utils.Constants.SELECTED_CURRENCY;
 /**
  * Adapter class for mapping currencies as list in recycler view
  */
-public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.CurrencyViewHolder> {
+public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.CurrencyViewHolder>
+        implements Filterable {
 
     private final Context context;
     private final ArrayList<CurrencyDetails> currencies;
+    private ArrayList<CurrencyDetails> currenciesFiltered;
+    private final ArrayList<CurrencyDetails> filteredCurrencies = new ArrayList<>();
 
     public CurrencyAdapter(Context context, ArrayList<CurrencyDetails> currencies) {
         this.context = context;
         this.currencies = currencies;
+        this.currenciesFiltered = currencies;
+        ((UpdateCurrenciesFiltered) context).updateCurrenciesFiltered(currenciesFiltered);
     }
 
     @NonNull
@@ -44,7 +51,7 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
 
     @Override
     public void onBindViewHolder(@NonNull CurrencyViewHolder holder, int position) {
-        CurrencyDetails currency = currencies.get(position);
+        CurrencyDetails currency = currenciesFiltered.get(position);
         holder.currencyName.setText(currency.getName());
         holder.currencyCharCode.setText(String.format(Locale.getDefault(), "%s %d",
                 currency.getCharCode(), currency.getNominal()));
@@ -67,7 +74,40 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
 
     @Override
     public int getItemCount() {
-        return currencies.size();
+        return currenciesFiltered.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                if (constraint.toString().isEmpty())
+                    currenciesFiltered = currencies;
+                else {
+                    filteredCurrencies.clear();
+                    for (CurrencyDetails currency : currencies)
+                        if (currency.getName().toLowerCase().contains(constraint.toString().toLowerCase()))
+                            filteredCurrencies.add(currency);
+                    currenciesFiltered = filteredCurrencies;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = currenciesFiltered;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                //noinspection unchecked
+                currenciesFiltered = (ArrayList<CurrencyDetails>) results.values;
+                ((UpdateCurrenciesFiltered) context).updateCurrenciesFiltered(currenciesFiltered);
+                notifyDataSetChanged();
+            }
+        };
+    }
+
+    public interface UpdateCurrenciesFiltered {
+        void updateCurrenciesFiltered(ArrayList<CurrencyDetails> currenciesFiltered);
     }
 
     public static class CurrencyViewHolder extends RecyclerView.ViewHolder {
