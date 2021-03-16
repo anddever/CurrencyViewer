@@ -11,7 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import ru.anddever.currencyviewer.R;
 import ru.anddever.currencyviewer.model.CurrencyDetails;
@@ -44,9 +46,15 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
     public void onBindViewHolder(@NonNull CurrencyViewHolder holder, int position) {
         CurrencyDetails currency = currencies.get(position);
         holder.currencyName.setText(currency.getName());
-        holder.currencyCharCode.setText(currency.getCharCode());
-        holder.currencyValue.setText(String.valueOf(currency.getValue()));
-        holder.currencyPrev.setText(String.valueOf(currency.getPrevious()));
+        holder.currencyCharCode.setText(String.format(Locale.getDefault(), "%s %d",
+                currency.getCharCode(), currency.getNominal()));
+        holder.currencyValue.setText(String.format("%s ₽", currency.getValue()));
+        BigDecimal diff = currency.getValue().subtract(currency.getPrevious());
+        String sign = "+";
+        if (diff.compareTo(BigDecimal.ZERO) < 0) {
+            sign = "";
+        }
+        holder.currencyPrev.setText(String.format("%s%s", sign, diff));
         if (currency.getValue().compareTo(currency.getPrevious()) < 0) {
             holder.growArrow.setImageResource(R.drawable.ic_baseline_arrow_downward);
         } else {

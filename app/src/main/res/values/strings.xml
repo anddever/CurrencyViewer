@@ -9,4 +9,5 @@
     <string name="error_network_msg">Отсутсвует Интернет соединение, проверьте подключение в настройках</string>
     <string name="grow_arrow">Индикатор роста</string>
     <string name="timestamp_holder">По состоянию на %s</string>
+    <string name="search">Поиск</string>
 </resources>
