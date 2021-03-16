@@ -16,6 +16,9 @@ import java.util.concurrent.Executors;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
+/**
+ * Test if UpdateCurrencyWorker execute successful
+ */
 public class UpdateCurrencyWorkerTest {
     private Context context;
     private Executor executor;
