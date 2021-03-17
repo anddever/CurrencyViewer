@@ -1,10 +1,10 @@
 package ru.anddever.currencyviewer.worker;
 
 import android.content.Context;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.work.ListenableWorker;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -18,6 +18,9 @@ import ru.anddever.currencyviewer.model.CurrencyDetails;
 import ru.anddever.currencyviewer.model.CurrencyResponse;
 import ru.anddever.currencyviewer.network.RetrofitClient;
 import ru.anddever.currencyviewer.repository.CurrencyRepository;
+import ru.anddever.currencyviewer.utils.Utils;
+
+import static ru.anddever.currencyviewer.utils.Constants.DATA_TIMESTAMP;
 
 /**
  * Worker for periodical loading currency data in background
@@ -36,6 +39,8 @@ public class UpdateCurrencyWorker extends Worker {
     public Result doWork() {
         CountDownLatch countDownLatch = new CountDownLatch(1);
 
+        Context context = getApplicationContext();
+
         Call<CurrencyResponse> currencyCall =
                 RetrofitClient.getInstance().getServerApi().getCurrency();
         currencyCall.enqueue(new Callback<CurrencyResponse>() {
@@ -50,6 +55,11 @@ public class UpdateCurrencyWorker extends Worker {
                             CurrencyRepository repository =
                                     new CurrencyRepository(getApplicationContext());
                             repository.insertAll(currencies);
+                            PreferenceManager.getDefaultSharedPreferences(context)
+                                    .edit()
+                                    .putString(DATA_TIMESTAMP,
+                                            Utils.dateConverter(response.body().getTimestamp()))
+                                    .apply();
                             result[0] = Result.success();
                             countDownLatch.countDown();
                             Log.d(TAG, "onResponse: success");
