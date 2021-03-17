@@ -7,6 +7,10 @@ Launcher icon made by https://www.freepik.com from https://www.flaticon.com
 
 Screenshots
 ===========
+<img src="https://github.com/anddever/CurrencyViewer/blob/main/screenshots/main_activity.jpg" width="266">
+<img src="https://github.com/anddever/CurrencyViewer/blob/main/screenshots/search.jpg" width="266">
+<img src="https://github.com/anddever/CurrencyViewer/blob/main/screenshots/converter_activity.jpg" width="266">
+<img src="https://github.com/anddever/CurrencyViewer/blob/main/screenshots/dark_theme.jpg" width="266">
 
 Credits
 =======
