@@ -1,7 +1,5 @@
 package ru.anddever.currencyviewer.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -18,7 +18,6 @@ import java.util.List;
 import ru.anddever.currencyviewer.databinding.ActivityConverterBinding;
 import ru.anddever.currencyviewer.model.CurrencyDetails;
 import ru.anddever.currencyviewer.repository.CurrencyRepository;
-import ru.anddever.currencyviewer.utils.Constants;
 
 import static ru.anddever.currencyviewer.utils.Constants.SELECTED_CURRENCY;
 

@@ -87,7 +87,8 @@ public class CurrencyAdapter extends RecyclerView.Adapter<CurrencyAdapter.Curren
                 else {
                     filteredCurrencies.clear();
                     for (CurrencyDetails currency : currencies)
-                        if (currency.getName().toLowerCase().contains(constraint.toString().toLowerCase()))
+                        if (currency.getName().toLowerCase().contains(constraint.toString()
+                                .toLowerCase()))
                             filteredCurrencies.add(currency);
                     currenciesFiltered = filteredCurrencies;
                 }

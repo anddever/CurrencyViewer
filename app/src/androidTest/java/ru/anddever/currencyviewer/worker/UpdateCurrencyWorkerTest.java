@@ -4,7 +4,6 @@ import android.content.Context;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.work.ListenableWorker;
-import androidx.work.testing.TestListenableWorkerBuilder;
 import androidx.work.testing.TestWorkerBuilder;
 
 import org.junit.Before;
@@ -14,7 +13,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * Test if UpdateCurrencyWorker execute successful

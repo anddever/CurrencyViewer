@@ -118,13 +118,14 @@ public class MainActivity extends AppCompatActivity implements
                     currencies.clear();
                     currencies.addAll(response.body().getValute().values());
                     repository.insertAll(currencies);
-                    Log.d(TAG, "CONVERT DATE: " + Utils.dateConverter(response.body().getTimestamp()));
+                    Log.d(TAG, "CONVERT DATE: " + Utils.dateConverter(response.body()
+                            .getTimestamp()));
                     settingsPref.edit().putString(DATA_TIMESTAMP,
                             Utils.dateConverter(response.body().getTimestamp())).apply();
                     runOnUiThread(() -> {
                         adapter.notifyDataSetChanged();
                         binding.dateView.setText(String.format(getString(R.string.timestamp_holder),
-                                settingsPref.getString(DATA_TIMESTAMP, "")));
+                                Utils.dateConverter(response.body().getTimestamp())));
                         hideLoadingViews();
                     });
                 } else {
