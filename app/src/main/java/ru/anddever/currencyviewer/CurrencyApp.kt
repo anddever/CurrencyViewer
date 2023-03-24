@@ -9,8 +9,12 @@ import java.util.concurrent.TimeUnit
 
 class CurrencyApp : BaseCurrencyApp() {
 
+    private val appComponent by lazy { initializeAppComponent() }
+
     override fun onCreate() {
         super.onCreate()
+        appComponent.inject(this)
+
         val updateCurrencyRequest = PeriodicWorkRequest.Builder(
             UpdateCurrencyWorker::class.java, 1,
             TimeUnit.HOURS
@@ -19,8 +23,8 @@ class CurrencyApp : BaseCurrencyApp() {
             getString(R.string.upload_currency_data_work),
             ExistingPeriodicWorkPolicy.KEEP, updateCurrencyRequest
         )
-
-        val appComponent = DaggerAppComponent.builder().context(applicationContext).build()
-        appComponent.inject(this)
     }
+
+    internal open fun initializeAppComponent() =
+        DaggerAppComponent.builder().context(applicationContext).build()
 }

@@ -7,7 +7,7 @@ import ru.anddever.currencyviewer.CurrencyApp
 import ru.anddever.currencyviewer.ui.MainActivity
 import javax.inject.Singleton
 
-@Component(modules = [NetworkModule::class])
+@Component(modules = [PresentationModule::class, NetworkModule::class])
 @Singleton
 interface AppComponent {
 
