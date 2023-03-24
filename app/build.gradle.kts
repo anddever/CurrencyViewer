@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.utils.addToStdlib.indexOfOrNull
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -16,6 +18,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         resourceConfigurations.add("ru")
         vectorDrawables.useSupportLibrary = true
+        setProperty("archivesBaseName", "CurrencyViewer-v$versionName")
     }
 
     buildTypes {
@@ -47,6 +50,21 @@ android {
                     "proguard-rules-debug.pro"
             )
         }
+    }
+
+    applicationVariants.all {
+        val variant = this
+        variant.outputs
+            .map { it as com.android.build.gradle.internal.api.BaseVariantOutputImpl }
+            .forEach { output ->
+                val outputFileName = "CurrencyViewer-${variant.baseName}-" +
+                        "${
+                            variant.versionName.indexOfOrNull('-')?.let {
+                                variant.versionName.substring(0, it)
+                            } ?: variant.versionName
+                        }.apk"
+                output.outputFileName = outputFileName
+            }
     }
 
     buildFeatures {
