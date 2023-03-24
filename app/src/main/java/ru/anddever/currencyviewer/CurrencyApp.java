@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 import ru.anddever.currencyviewer.worker.UpdateCurrencyWorker;
 
-public class CurrencyApplication extends Application {
+public class CurrencyApp extends Application {
 
     @Override
     public void onCreate() {

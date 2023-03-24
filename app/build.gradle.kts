@@ -22,6 +22,7 @@ android {
         release {
             isMinifyEnabled   = true
             isShrinkResources = true
+            multiDexEnabled   = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                     "proguard-rules.pro"
@@ -32,6 +33,7 @@ android {
             applicationIdSuffix = ".debug"
             isMinifyEnabled     = false
             isShrinkResources   = false
+            multiDexEnabled     = true
         }
         create("debugMini") {
             initWith(getByName("debug"))
@@ -39,6 +41,7 @@ android {
             applicationIdSuffix = ".debug-mini"
             isMinifyEnabled     = true
             isShrinkResources   = true
+            multiDexEnabled     = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                     "proguard-rules-debug.pro"
@@ -79,4 +82,6 @@ dependencies {
     // WorkManager
     implementation("androidx.work:work-runtime:2.8.0")
     androidTestImplementation("androidx.work:work-testing:2.8.0")
+
+    debugImplementation("androidx.multidex:multidex:2.0.1")
 }
