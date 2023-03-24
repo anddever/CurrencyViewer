@@ -94,7 +94,7 @@ dependencies {
     // Room components
     implementation("androidx.room:room-runtime:2.5.0")
     implementation("androidx.core:core-ktx:1.9.0")
-    annotationProcessor("androidx.room:room-compiler:2.5.0")
+    kapt("androidx.room:room-compiler:2.5.0")
     testImplementation("androidx.room:room-testing:2.5.0")
 
     // Testing
