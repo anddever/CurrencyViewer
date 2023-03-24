@@ -42,7 +42,7 @@ android {
         create("debugMini") {
             initWith(getByName("debug"))
             versionNameSuffix   = "-debug-mini"
-            applicationIdSuffix = ".debug-mini"
+            applicationIdSuffix = ".debug.mini"
             isMinifyEnabled     = true
             isShrinkResources   = true
             multiDexEnabled     = false
