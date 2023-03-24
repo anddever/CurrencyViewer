@@ -3,6 +3,7 @@ import org.jetbrains.kotlin.utils.addToStdlib.indexOfOrNull
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    kotlin("kapt")
 }
 
 android {
@@ -79,6 +80,10 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
 
+    implementation("com.google.dagger:dagger:2.45")
+    kapt("com.google.dagger:dagger-compiler:2.45")
+    kaptAndroidTest("com.google.dagger:dagger-compiler:2.45")
+
     // Network
     /** Okhttp version must be 3.12.1 for supporting android lower than 4.4 */
     implementation("com.squareup.okhttp3:logging-interceptor:3.12.1")
@@ -102,4 +107,8 @@ dependencies {
     androidTestImplementation("androidx.work:work-testing:2.8.0")
 
     debugImplementation("androidx.multidex:multidex:2.0.1")
+}
+
+kapt {
+    correctErrorTypes = true
 }
