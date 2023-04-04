@@ -7,7 +7,7 @@ import ru.anddever.currencyviewer.di.DaggerAppComponent
 import ru.anddever.currencyviewer.worker.UpdateCurrencyWorker
 import java.util.concurrent.TimeUnit
 
-class CurrencyApp : BaseCurrencyApp() {
+open class CurrencyApp : BaseCurrencyApp() {
 
     private val appComponent by lazy { initializeAppComponent() }
 
