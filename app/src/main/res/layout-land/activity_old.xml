@@ -8,7 +8,7 @@
     android:paddingLeft="8dp"
     android:paddingEnd="8dp"
     android:paddingRight="8dp"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.OldActivity">
 
     <TextView
         android:id="@+id/date_view"

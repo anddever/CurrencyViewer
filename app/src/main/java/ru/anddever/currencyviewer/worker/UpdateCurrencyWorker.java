@@ -1,5 +1,7 @@
 package ru.anddever.currencyviewer.worker;
 
+import static ru.anddever.currencyviewer.utils.ConstantsKt.DATA_TIMESTAMP;
+
 import android.content.Context;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -19,8 +21,6 @@ import ru.anddever.currencyviewer.model.CurrencyResponse;
 import ru.anddever.currencyviewer.network.RetrofitClient;
 import ru.anddever.currencyviewer.repository.CurrencyRepository;
 import ru.anddever.currencyviewer.utils.Utils;
-
-import static ru.anddever.currencyviewer.utils.Constants.DATA_TIMESTAMP;
 
 /**
  * Worker for periodical loading currency data in background

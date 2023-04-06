@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/viewerFragment">
+
+    <fragment
+        android:id="@+id/viewerFragment"
+        android:name="ru.anddever.currencyviewer.ui.viewer.ViewerFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_viewer">
+        <action
+            android:id="@+id/action_currencyViewerFragment_to_converterFragment"
+            app:destination="@id/converterFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/converterFragment"
+        android:name="ru.anddever.currencyviewer.ui.converter.ConverterFragment"
+        android:label="@string/currency_converter_text"
+        tools:layout="@layout/fragment_converter" />
+</navigation>

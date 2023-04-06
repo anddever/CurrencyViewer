@@ -13,18 +13,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CurrencyViewer">
 
-        <activity android:name=".ui.MainActivity"
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.OldActivity"
+            android:exported="true">
+
+        </activity>
+        <activity
             android:name=".ui.ConverterActivity"
             android:label="@string/currency_converter_text"
-            android:parentActivityName=".ui.MainActivity" />
+            android:parentActivityName=".ui.OldActivity" />
 
     </application>
 

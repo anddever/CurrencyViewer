@@ -1,5 +1,7 @@
 package ru.anddever.currencyviewer.ui.adapter;
 
+import static ru.anddever.currencyviewer.utils.ConstantsKt.SELECTED_CURRENCY;
+
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -21,7 +23,6 @@ import ru.anddever.currencyviewer.R;
 import ru.anddever.currencyviewer.model.CurrencyDetails;
 import ru.anddever.currencyviewer.ui.ConverterActivity;
 
-import static ru.anddever.currencyviewer.utils.Constants.SELECTED_CURRENCY;
 
 /**
  * Adapter class for mapping currencies as list in recycler view

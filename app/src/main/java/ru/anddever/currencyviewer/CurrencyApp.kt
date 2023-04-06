@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit
 
 open class CurrencyApp : BaseCurrencyApp() {
 
-    private val appComponent by lazy { initializeAppComponent() }
+    val appComponent by lazy { initializeAppComponent() }
 
     override fun onCreate() {
         super.onCreate()

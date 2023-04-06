@@ -1,5 +1,7 @@
 package ru.anddever.currencyviewer.ui;
 
+import static ru.anddever.currencyviewer.utils.ConstantsKt.DATA_TIMESTAMP;
+
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
@@ -30,7 +32,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ru.anddever.currencyviewer.R;
-import ru.anddever.currencyviewer.databinding.ActivityMainBinding;
+import ru.anddever.currencyviewer.databinding.ActivityOldBinding;
 import ru.anddever.currencyviewer.model.CurrencyDetails;
 import ru.anddever.currencyviewer.model.CurrencyResponse;
 import ru.anddever.currencyviewer.network.RetrofitClient;
@@ -38,13 +40,11 @@ import ru.anddever.currencyviewer.repository.CurrencyRepository;
 import ru.anddever.currencyviewer.ui.adapter.CurrencyAdapter;
 import ru.anddever.currencyviewer.utils.Utils;
 
-import static ru.anddever.currencyviewer.utils.Constants.DATA_TIMESTAMP;
-
-public class MainActivity extends AppCompatActivity implements
+public class OldActivity extends AppCompatActivity implements
         SearchView.OnQueryTextListener, CurrencyAdapter.UpdateCurrenciesFiltered {
 
-    static final String TAG = MainActivity.class.getSimpleName();
-    ActivityMainBinding binding;
+    static final String TAG = OldActivity.class.getSimpleName();
+    ActivityOldBinding binding;
     ArrayList<CurrencyDetails> currenciesFiltered = new ArrayList<>();
     private ArrayList<CurrencyDetails> currencies;
     private CurrencyAdapter adapter;
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        binding = ActivityOldBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         settingsPref = PreferenceManager.getDefaultSharedPreferences(this);

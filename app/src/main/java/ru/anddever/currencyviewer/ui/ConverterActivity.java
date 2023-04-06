@@ -19,7 +19,7 @@ import ru.anddever.currencyviewer.databinding.ActivityConverterBinding;
 import ru.anddever.currencyviewer.model.CurrencyDetails;
 import ru.anddever.currencyviewer.repository.CurrencyRepository;
 
-import static ru.anddever.currencyviewer.utils.Constants.SELECTED_CURRENCY;
+import static ru.anddever.currencyviewer.utils.ConstantsKt.SELECTED_CURRENCY;
 
 public class ConverterActivity extends AppCompatActivity {
 

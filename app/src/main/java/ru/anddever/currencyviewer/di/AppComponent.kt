@@ -4,16 +4,17 @@ import android.content.Context
 import dagger.BindsInstance
 import dagger.Component
 import ru.anddever.currencyviewer.CurrencyApp
-import ru.anddever.currencyviewer.ui.MainActivity
+import ru.anddever.currencyviewer.MainActivity
+import ru.anddever.currencyviewer.ui.OldActivity
 import javax.inject.Singleton
 
 @Component(modules = [PresentationModule::class, NetworkModule::class])
 @Singleton
 interface AppComponent {
 
-    fun inject(activity: MainActivity)
-
     fun inject(app: CurrencyApp)
+
+    fun inject(activity: MainActivity)
 
     @Component.Builder
     interface Builder {
